@@ -5,6 +5,7 @@
 package sw;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -105,5 +106,30 @@ public class WSCliente {
             }
         }
         return false;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "ValidarContra")
+    public Integer ValidarContra(@WebParam(name = "passone") String passone, @WebParam(name = "passtwo") String passtwo) {
+        //TODO write your implementation code here:
+        if (passone.equals(passtwo)) {
+            // Contraseña de 4-8 caracteres que requiere números y letras mayusculas minusculas
+            String PASSWORD_REGEX
+                    = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$";
+            
+            Pattern PASSWORD_PATTERN
+                    = Pattern.compile(PASSWORD_REGEX);
+            if (PASSWORD_PATTERN.matcher(passone).matches()) {
+                System.out.print("The Password " + passone + " is valid");
+                return 1;//La contraseña es valida
+            } else {
+                System.out.print("The Password " + passone + " isn't valid");
+                return 2; //La contraseña es invalida
+            }
+        } else {
+            return 0;//Las contraseñas no coinciden
+        }
     }
 }
